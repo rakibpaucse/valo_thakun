@@ -1,13 +1,24 @@
-// Prisma schema for Anis Bhai — doctor portfolio + booking + community platform.
-// SQLite for dev (single file), easy swap to Postgres for prod.
+// Prisma schema for Valo Thakun — doctor portfolio + booking + community platform.
+// Postgres in production (Vercel + Neon / Supabase). Locally either:
+//   • point DATABASE_URL at the same Postgres instance, or
+//   • point it at a local Postgres in Docker.
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  // Vercel runs on Linux. Default targets cover the host, this adds linux
+  // builds so `prisma generate` on Windows still produces a usable binary
+  // when the build is pushed up to a Linux runner.
+  binaryTargets = ["native", "rhel-openssl-3.0.x", "debian-openssl-3.0.x"]
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
+
+  // If your provider gives you separate pooled + direct URLs (Neon,
+  // Supabase pgBouncer, etc.), uncomment the next line and set DIRECT_URL.
+  // Migrations (`prisma db push`, `prisma migrate`) will use the direct URL.
+  // directUrl = env("DIRECT_URL")
 }
 
 // ─────────────────────────────────────────────────────────────────────
