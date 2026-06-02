@@ -1,0 +1,32 @@
+# dependencies
+node_modules
+
+# build output
+.next
+dist
+.tsbuildinfo
+
+# secrets (don't commit AUTH_SECRET, DATABASE_URL etc.)
+.env
+.env.local
+.env.*.local
+
+# database (re-seeded via `npm run db:reset`)
+*.db
+*.db-journal
+
+# logs
+*.log
+npm-debug.log*
+
+# misc
+.DS_Store
+.claude/
+
+# IDE
+.vscode/*
+!.vscode/settings.json
+.idea
+
+# static assets
+Anis_Bhai.pdf

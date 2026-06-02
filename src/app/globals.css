@@ -1,0 +1,192 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  /* Single theme — warm cream + deep navy ink + periwinkle iris */
+  :root {
+    --background: 234 60% 99%;
+    --foreground: 228 65% 21%;
+    --card: 0 0% 100%;
+    --card-foreground: 228 65% 21%;
+    --primary: 234 65% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 235 78% 96%;
+    --secondary-foreground: 228 65% 21%;
+    --muted: 235 60% 97%;
+    --muted-foreground: 228 22% 46%;
+    --accent: 234 65% 61%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 78% 56%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 234 35% 92%;
+    --input: 234 35% 92%;
+    --ring: 234 65% 61%;
+    --radius: 0.875rem;
+  }
+
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased selection:bg-primary/15 selection:text-foreground;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  .font-display {
+    font-optical-sizing: auto;
+    font-variation-settings: "opsz" 32, "SOFT" 50, "WONK" 0;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .container-prose {
+    @apply mx-auto max-w-3xl px-5;
+  }
+  .ink-text {
+    @apply text-foreground;
+  }
+  .glass {
+    @apply backdrop-blur-xl bg-background/80 supports-[backdrop-filter]:bg-background/70;
+  }
+  .grid-bg {
+    background-image:
+      linear-gradient(to right, hsl(var(--foreground) / 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, hsl(var(--foreground) / 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+  .dot-bg {
+    background-image: radial-gradient(hsl(var(--primary) / 0.15) 1px, transparent 1px);
+    background-size: 18px 18px;
+  }
+  .mask-fade-b {
+    mask-image: linear-gradient(to bottom, black 50%, transparent);
+  }
+  .mask-fade-radial {
+    mask-image: radial-gradient(ellipse at center, black 40%, transparent 75%);
+  }
+  .marquee-fade {
+    mask-image: linear-gradient(to right, transparent, black 8%, black 92%, transparent);
+  }
+
+  /* Reveal-on-load helpers */
+  .reveal {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+  .reveal-d-1 { animation-delay: 0.05s; }
+  .reveal-d-2 { animation-delay: 0.12s; }
+  .reveal-d-3 { animation-delay: 0.20s; }
+  .reveal-d-4 { animation-delay: 0.30s; }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Page enter — runs once per route mount via key={pathname} on the wrapper */
+@keyframes page-fade {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Centered loading-pill entrance */
+@keyframes fade-in-up {
+  from { opacity: 0; transform: translate(-50%, calc(-50% + 8px)); }
+  to   { opacity: 1; transform: translate(-50%, -50%); }
+}
+
+/* EKG pulse line — draws in, holds, draws out (loops forever) */
+@keyframes pulse-draw {
+  0%   { stroke-dashoffset: 64; opacity: 0; }
+  18%  { opacity: 1; }
+  55%  { stroke-dashoffset: 0; opacity: 1; }
+  85%  { opacity: 0; }
+  100% { stroke-dashoffset: -64; opacity: 0; }
+}
+
+/* Heartbeat scale — sharp accent on the badge halo */
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1);    opacity: 0.55; }
+  20%      { transform: scale(1.18); opacity: 0.85; }
+  40%      { transform: scale(1);    opacity: 0.55; }
+  60%      { transform: scale(1.10); opacity: 0.75; }
+}
+
+/* Concentric pulse ring expanding outward from a center point */
+@keyframes pulse-ring {
+  0%   { transform: translate(-50%, -50%) scale(0.2); opacity: 0; }
+  10%  { opacity: 0.55; }
+  100% { transform: translate(-50%, -50%) scale(2.4);  opacity: 0; }
+}
+
+/* Slow drift for ambient background blobs (parallax feel) */
+@keyframes blob-drift-1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(40px, -30px) scale(1.06); }
+}
+@keyframes blob-drift-2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50%      { transform: translate(-50px, 40px) scale(1.08); }
+}
+
+/* Gentle bob for the scroll-hint chevron */
+@keyframes scroll-bob {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50%      { transform: translateY(8px); opacity: 1; }
+}
+
+/* Scrollbar polish */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--foreground) / 0.18);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+::-webkit-scrollbar-thumb:hover { background: hsl(var(--foreground) / 0.35); background-clip: padding-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
+/* Focus ring */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px hsl(var(--background)), 0 0 0 4px hsl(var(--primary) / 0.55);
+  border-radius: calc(var(--radius) - 4px);
+}
+
+/* Animated underline for nav links */
+.link-underline {
+  position: relative;
+}
+.link-underline::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  bottom: -6px;
+  height: 3px;
+  width: 18px;
+  border-radius: 9999px;
+  background: hsl(var(--primary));
+  transform: translateX(-50%) scaleX(0);
+  transform-origin: center;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover::after {
+  transform: translateX(-50%) scaleX(0.6);
+}
+.link-underline.is-active::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+/* Soft press for clickable surfaces */
+.press {
+  transition: transform 0.18s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.press:active {
+  transform: translateY(1px) scale(0.99);
+}
